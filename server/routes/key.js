@@ -54,5 +54,30 @@ router.get("/getmyapis", middleware, async (req, res) => {
   }
 });
 
+router.delete("/delete/:id", middleware, async (req, res) => {
+  try {
+    const username = req.username;
+    const { id } = req.params;
+
+    const apiKey = await ApiKey.findOne({ _id: id });
+
+    if (!apiKey) {
+      return res.status(404).json({ message: "API Key not found" });
+    }
+
+    if (apiKey.username !== username) {
+      return res.status(403).json({ message: "Unauthorized" });
+    }
+
+    await ApiKey.findByIdAndDelete(id);
+
+    res.status(200).json({ message: "API Key deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting API key:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 
 module.exports = router;
