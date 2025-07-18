@@ -1,0 +1,58 @@
+const express = require("express");
+const router = express.Router();
+const ApiKey = require("../models/Key");
+const middleware = require("../middleware/authMiddleware")
+
+// util to generate unique random key
+const generateUniqueKey = () => {
+  return 'key_' + Math.random().toString(36).substr(2, 12);
+};
+
+router.post("/create", middleware, async (req, res) => {
+  const { name, connectionUri } = req.body;
+  const username = req.username;
+  if (!username || !name || !connectionUri) {
+    return res.status(400).json({ message: "Missing required fields" });
+  }
+
+  let uniqueKey;
+  let isUnique = false;
+
+  // generate a truly unique key
+  while (!isUnique) {
+    uniqueKey = generateUniqueKey();
+    const existing = await ApiKey.findOne({ key: uniqueKey });
+    if (!existing) isUnique = true;
+  }
+
+  try {
+    const newKey = new ApiKey({
+      username,
+      name,
+      key: uniqueKey,
+      connectionUri,
+    });
+
+    await newKey.save();
+
+    res.status(201).json({ message: "API Key created", apiKey: newKey });
+  } catch (err) {
+    console.error("Error creating key:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.get("/getmyapis", middleware, async (req, res) => {
+  try {
+    const username = req.username;
+    const data = await ApiKey.find({ username: username }); // await the query
+    console.log(data);
+    res.status(200).json(data);
+  } catch (error) {
+    console.error("Error fetching APIs:", error);
+    res.status(500).json({ error: "Failed to fetch API keys" });
+  }
+});
+
+
+module.exports = router;
