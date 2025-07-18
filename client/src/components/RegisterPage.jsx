@@ -74,7 +74,7 @@ const RegisterPage = () => {
   setIsLoading(true);
 
   try {
-    const response = await fetch('http://localhost:5000/api/auth/register', {
+    const response = await fetch('https://backdevsai.onrender.com/api/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ const RegisterPage = () => {
               <div className="w-10 h-10 bg-gradient-to-br from-[#3b82f6] to-[#1d4ed8] rounded-lg flex items-center justify-center">
                 <Cpu className="w-6 h-6 text-white" />
               </div>
-              <span className="text-2xl font-bold">AIBackDevs</span>
+              <span className="text-2xl font-bold">BackDevsAI</span>
             </div>
             
             <h1 className="text-3xl font-bold mb-2">Create account</h1>

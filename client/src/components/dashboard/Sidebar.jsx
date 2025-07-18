@@ -40,7 +40,7 @@ const Sidebar = ({ isOpen, onToggle }) => {
             <div className="w-8 h-8 bg-gradient-to-br from-[#3b82f6] to-[#1d4ed8] rounded-lg flex items-center justify-center">
               <Cpu className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold">AIBackDevs</span>
+            <span className="text-xl font-bold">BackDevsAI</span>
           </div>
           <button
             onClick={onToggle}

@@ -13,7 +13,7 @@ const DashboardHome = () => {
   useEffect(() => {
     const fetchKeys = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/key/getmyapis', {
+        const res = await fetch('https://backdevsai.onrender.com/api/key/getmyapis', {
           method:"GET",
           credentials: "include"
         });
@@ -65,9 +65,9 @@ const DashboardHome = () => {
       <div className="bg-[rgba(255,255,255,0.02)] backdrop-blur-sm rounded-xl border border-[#1f2937] p-6">
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="text-2xl font-bold mb-2">Welcome back, John!</h2>
+            <h2 className="text-2xl font-bold mb-2">Welcome back</h2>
             <p className="text-[#9ca3af] mb-4 lg:mb-0">
-              Your AI backend is running smoothly. Ready to create something amazing?
+              Create new api keys and let us do the rest
             </p>
           </div>
           <Link

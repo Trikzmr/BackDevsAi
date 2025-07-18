@@ -1,23 +1,21 @@
 import React, { useState } from 'react';
-import { 
-  Copy, 
-  ChevronDown, 
-  ChevronRight, 
-  Code, 
-  Book, 
+import {
+  Copy,
+  ChevronDown,
+  ChevronRight,
+  Code,
+  Book,
   ExternalLink,
   CheckCircle
 } from 'lucide-react';
 
 const ApiDocs = () => {
-  const [expandedSections, setExpandedSections] = useState(['authentication']);
+  const [expandedSections, setExpandedSections] = useState(['gettingStarted']);
   const [selectedLanguage, setSelectedLanguage] = useState('javascript');
 
   const toggleSection = (section) => {
-    setExpandedSections(prev => 
-      prev.includes(section) 
-        ? prev.filter(s => s !== section)
-        : [...prev, section]
+    setExpandedSections((prev) =>
+      prev.includes(section) ? prev.filter((s) => s !== section) : [...prev, section]
     );
   };
 
@@ -27,242 +25,162 @@ const ApiDocs = () => {
 
   const codeExamples = {
     javascript: {
-      authentication: `const response = await fetch('https://api.aibackdevs.com/auth/login', {
+      gettingStarted: `
+const response = await fetch('https://backdevsai.onrender.com/api/v1', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer YOUR_API_KEY'
   },
   body: JSON.stringify({
-    email: 'user@example.com',
-    password: 'password123'
+    instructions: "Get the list of all data",
+    key: "YOUR_API_KEY",
+    collectionName: "Your_Collection_Schema_Name",
   })
 });
-
 const data = await response.json();
 console.log(data);`,
-      users: `// Create a new user
-const createUser = async (userData) => {
-  const response = await fetch('https://api.aibackdevs.com/users', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer YOUR_API_KEY'
-    },
-    body: JSON.stringify(userData)
-  });
-  
-  return response.json();
+
+      getData: `
+const response = await fetch('https://backdevsai.onrender.com/api/v1', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    instructions: "get the data where username=MrTrikz",
+    key: "YOUR_API_KEY",
+    collectionName: "Your_Collection_Schema_Name",
+  })
+});
+const data = await response.json();
+console.log(data);`,
+
+      addData: `
+const newData = {
+  name: "Debabrato Das"
 };
+const response = await fetch('https://backdevsai.onrender.com/api/v1', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    instructions: "add this new data",
+    key: "YOUR_API_KEY",
+    collectionName: "Your_Collection_Schema_Name",
+    data: newData
+  })
+});
+const data = await response.json();
+console.log(data);`,
 
-// Get user by ID
-const getUser = async (userId) => {
-  const response = await fetch(\`https://api.aibackdevs.com/users/\${userId}\`, {
-    headers: {
-      'Authorization': 'Bearer YOUR_API_KEY'
-    }
-  });
-  
-  return response.json();
-};`,
-      webhooks: `// Set up webhook endpoint
-app.post('/webhook', (req, res) => {
-  const signature = req.headers['x-aibackdevs-signature'];
-  const payload = req.body;
-  
-  // Verify webhook signature
-  const isValid = verifyWebhookSignature(payload, signature);
-  
-  if (isValid) {
-    console.log('Webhook received:', payload);
-    res.status(200).send('OK');
-  } else {
-    res.status(401).send('Unauthorized');
-  }
-});`
-    },
-    python: {
-      authentication: `import requests
+      updateData: `
+const newData = {
+  name: 'Jane Updated',
+  email: 'jane.previous@example.com'
+};
+const previousData = {
+  name: 'Jane Previous',
+  email: 'jane.updated@example.com'
+};
+const response = await fetch('https://backdevsai.onrender.com/api/v1', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    instructions: "update the old data with new data",
+    key: "YOUR_API_KEY",
+    collectionName: "Application",
+    data: newData,
+    oldData: previousData
+  })
+});
+const data = await response.json();
+console.log(data);`,
 
-url = "https://api.aibackdevs.com/auth/login"
-headers = {
-    "Content-Type": "application/json",
-    "Authorization": "Bearer YOUR_API_KEY"
-}
-data = {
-    "email": "user@example.com",
-    "password": "password123"
-}
-
-response = requests.post(url, headers=headers, json=data)
-print(response.json())`,
-      users: `import requests
-
-# Create a new user
-def create_user(user_data):
-    url = "https://api.aibackdevs.com/users"
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer YOUR_API_KEY"
-    }
-    
-    response = requests.post(url, headers=headers, json=user_data)
-    return response.json()
-
-# Get user by ID
-def get_user(user_id):
-    url = f"https://api.aibackdevs.com/users/{user_id}"
-    headers = {
-        "Authorization": "Bearer YOUR_API_KEY"
-    }
-    
-    response = requests.get(url, headers=headers)
-    return response.json()`,
-      webhooks: `from flask import Flask, request, abort
-import hmac
-import hashlib
-
-app = Flask(__name__)
-
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    signature = request.headers.get('X-AIBackDevs-Signature')
-    payload = request.get_json()
-    
-    # Verify webhook signature
-    if verify_webhook_signature(payload, signature):
-        print('Webhook received:', payload)
-        return 'OK', 200
-    else:
-        abort(401)
-
-def verify_webhook_signature(payload, signature):
-    # Implementation depends on your webhook secret
-    pass`
-    },
-    curl: {
-      authentication: `curl -X POST https://api.aibackdevs.com/auth/login \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer YOUR_API_KEY" \\
-  -d '{
-    "email": "user@example.com",
-    "password": "password123"
-  }'`,
-      users: `# Create a new user
-curl -X POST https://api.aibackdevs.com/users \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer YOUR_API_KEY" \\
-  -d '{
-    "name": "John Doe",
-    "email": "john@example.com"
-  }'
-
-# Get user by ID
-curl -X GET https://api.aibackdevs.com/users/123 \\
-  -H "Authorization: Bearer YOUR_API_KEY"`,
-      webhooks: `# Configure webhook endpoint
-curl -X POST https://api.aibackdevs.com/webhooks \\
-  -H "Content-Type: application/json" \\
-  -H "Authorization: Bearer YOUR_API_KEY" \\
-  -d '{
-    "url": "https://yourapp.com/webhook",
-    "events": ["user.created", "user.updated"]
-  }'`
+      deleteData: `
+const response = await fetch('https://backdevsai.onrender.com/api/v1', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    instructions: "delete the data where username=MrTrikz",
+    key: "YOUR_API_KEY",
+    collectionName: "Your_Collection_Schema_Name",
+  })
+});
+const data = await response.json();
+console.log(data);`
     }
   };
 
   const sections = [
-    {
-      id: 'authentication',
-      title: 'Authentication',
-      description: 'Learn how to authenticate with the AIBackDevs API',
-      endpoints: [
-        {
-          method: 'POST',
-          path: '/auth/login',
-          description: 'Authenticate user and get access token'
-        },
-        {
-          method: 'POST',
-          path: '/auth/refresh',
-          description: 'Refresh access token'
-        }
-      ]
-    },
-    {
-      id: 'users',
-      title: 'Users',
-      description: 'Manage user accounts and profiles',
-      endpoints: [
-        {
-          method: 'GET',
-          path: '/users',
-          description: 'Get list of users'
-        },
-        {
-          method: 'POST',
-          path: '/users',
-          description: 'Create a new user'
-        },
-        {
-          method: 'GET',
-          path: '/users/{id}',
-          description: 'Get user by ID'
-        },
-        {
-          method: 'PUT',
-          path: '/users/{id}',
-          description: 'Update user'
-        },
-        {
-          method: 'DELETE',
-          path: '/users/{id}',
-          description: 'Delete user'
-        }
-      ]
-    },
-    {
-      id: 'webhooks',
-      title: 'Webhooks',
-      description: 'Set up real-time notifications',
-      endpoints: [
-        {
-          method: 'POST',
-          path: '/webhooks',
-          description: 'Create webhook endpoint'
-        },
-        {
-          method: 'GET',
-          path: '/webhooks',
-          description: 'List webhook endpoints'
-        },
-        {
-          method: 'DELETE',
-          path: '/webhooks/{id}',
-          description: 'Delete webhook'
-        }
-      ]
-    }
-  ];
+  {
+    id: 'gettingStarted',
+    title: 'Getting Started',
+    description: 'Basic setup to authenticate and connect with BackDevsAI API',
+    extraInfo: 'This section guides you through the initial steps of integrating with the BackDevsAI API. It demonstrates how to send a basic POST request containing essential fields such as your API key, collection name, and instruction. This universal endpoint supports all actions—retrieving, updating, deleting, and adding data—based on the instruction you provide. It’s the one-stop entry point to interact with your database programmatically using simple JSON payloads.',
+    endpoints: [
+      {
+        method: 'POST',
+        path: 'https://backdevsai.onrender.com/api/v1',
+        description: 'Single API Which Does Everything'
+      }
+    ]
+  },
+  {
+    id: 'getData',
+    title: 'Get Data from Database',
+    description: 'Learn how to retrieve data from the database',
+    extraInfo: 'To retrieve data, you simply pass a readable instruction like "get all data" or a filtered query such as "where username=MrTrikz". The API processes your instruction, finds matching documents in the specified collection, and returns them as a JSON array. This method eliminates the need for traditional query parameters, making data fetching intuitive, human-readable, and flexible without compromising on control or specificity.',
+  },
+  {
+    id: 'addData',
+    title: 'Add Data to Database',
+    description: 'Add new records to your database using our API',
+    extraInfo: 'Adding new data is as simple as sending a JSON object in the `data` field, along with your API key and collection name. The instruction "add this new data" tells the API to insert your provided object into the MongoDB collection. You don’t need to worry about schema enforcement here—just match the structure of your existing collection, and the API will handle insertion safely and efficiently.',
+  },
+  {
+    id: 'updateData',
+    title: 'Update Data in Database',
+    description: 'Update existing records in your database',
+    extraInfo: 'Updating data involves passing both the `oldData` (the current state of the document you want to find) and the `data` (the new values you want to replace it with). The API matches the document using `oldData` and applies the update accordingly. This operation ensures you only modify exact records you intend to, maintaining accuracy and preventing unintended overwrites or changes across other documents.',
+  },
+  {
+    id: 'deleteData',
+    title: 'Delete Data from Database',
+    description: 'Remove unwanted records from the database',
+    extraInfo: 'To delete a document, you need to provide a clear instruction, such as "delete the data where username=MrTrikz", along with your API key and the relevant collection name. The API interprets the instruction, identifies the record(s), and removes them from your MongoDB database. It is safe, targeted, and respects your filtering conditions to ensure only the intended data is deleted without affecting anything else.',
+  }
+];
+
 
   const getMethodColor = (method) => {
     switch (method) {
-      case 'GET': return 'bg-green-500/20 text-green-400';
-      case 'POST': return 'bg-blue-500/20 text-blue-400';
-      case 'PUT': return 'bg-yellow-500/20 text-yellow-400';
-      case 'DELETE': return 'bg-red-500/20 text-red-400';
-      default: return 'bg-gray-500/20 text-gray-400';
+      case 'GET':
+        return 'bg-green-500/20 text-green-400';
+      case 'POST':
+        return 'bg-blue-500/20 text-blue-400';
+      case 'PUT':
+        return 'bg-yellow-500/20 text-yellow-400';
+      case 'DELETE':
+        return 'bg-red-500/20 text-red-400';
+      default:
+        return 'bg-gray-500/20 text-gray-400';
     }
   };
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-2xl font-bold mb-2">API Documentation</h2>
-          <p className="text-[#9ca3af]">Complete guide to integrating with AIBackDevs API</p>
+          <p className="text-[#9ca3af]">Complete guide to integrating with BackDevsAI API</p>
         </div>
+
+
         <div className="flex items-center space-x-3 mt-4 sm:mt-0">
           <select
             value={selectedLanguage}
@@ -270,8 +188,6 @@ curl -X POST https://api.aibackdevs.com/webhooks \\
             className="bg-[rgba(255,255,255,0.05)] border border-[#1f2937] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent"
           >
             <option value="javascript">JavaScript</option>
-            <option value="python">Python</option>
-            <option value="curl">cURL</option>
           </select>
           <button className="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-4 py-2 rounded-lg font-semibold transition-all duration-200 flex items-center">
             <ExternalLink className="w-4 h-4 mr-2" />
@@ -279,8 +195,15 @@ curl -X POST https://api.aibackdevs.com/webhooks \\
           </button>
         </div>
       </div>
-
-      {/* Quick Start */}
+              <div className="bg-[rgba(255,255,255,0.03)] p-6 rounded-xl border border-[#1f2937] space-y-4 text-[#9ca3af]">
+  <p>
+    While it is possible to perform search, create, update, and delete operations by simply writing the appropriate instruction, it is highly recommended to follow a standardized format. Using a consistent structure not only ensures better accuracy and reliability but also makes the code more readable and maintainable. This becomes especially important when scaling your application or collaborating with others, as a well-defined format helps avoid misinterpretations and reduces the likelihood of errors during API interactions.
+  </p>
+  <p>
+    <span className="font-semibold text-white">Note:</span> This API is currently in <span className="italic">beta</span>. For safety and stability, we suggest using it with <span className="italic">test databases</span> only. We’re actively working to improve and prepare it for production environments.
+  </p>
+</div>
+ {/* Quick Start */}
       <div className="bg-[rgba(255,255,255,0.02)] backdrop-blur-sm rounded-xl border border-[#1f2937] p-6">
         <div className="flex items-center mb-4">
           <CheckCircle className="w-5 h-5 text-[#3b82f6] mr-2" />
@@ -325,30 +248,37 @@ curl -X POST https://api.aibackdevs.com/webhooks \\
                 )}
               </div>
             </button>
-            
+
             {expandedSections.includes(section.id) && (
               <div className="border-t border-[#1f2937] p-6 space-y-6">
-                {/* Endpoints */}
-                <div>
-                  <h4 className="font-semibold mb-4">Endpoints</h4>
-                  <div className="space-y-3">
-                    {section.endpoints.map((endpoint, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between p-3 bg-[rgba(255,255,255,0.05)] rounded-lg"
-                      >
-                        <div className="flex items-center space-x-3">
-                          <span className={`px-2 py-1 rounded text-xs font-medium ${getMethodColor(endpoint.method)}`}>
-                            {endpoint.method}
-                          </span>
-                          <code className="text-sm">{endpoint.path}</code>
-                        </div>
-                        <span className="text-sm text-[#9ca3af]">{endpoint.description}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
                 
+                {section.extraInfo && (
+                  <div className="text-sm text-[#d1d5db]">{section.extraInfo}</div>
+                )}
+
+                {/* Endpoints */}
+                {section.endpoints && section.endpoints.length > 0 && (
+                  <>
+                    <h4 className="font-semibold mb-4">Endpoints</h4>
+                    <div className="space-y-3">
+                      {section.endpoints.map((endpoint, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 bg-[rgba(255,255,255,0.05)] rounded-lg"
+                        >
+                          <div className="flex items-center space-x-3">
+                            <span className={`px-2 py-1 rounded text-xs font-medium ${getMethodColor(endpoint.method)}`}>
+                              {endpoint.method}
+                            </span>
+                            <code className="text-sm">{endpoint.path}</code>
+                          </div>
+                          <span className="text-sm text-[#9ca3af]">{endpoint.description}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+
                 {/* Code Example */}
                 <div>
                   <div className="flex items-center justify-between mb-4">

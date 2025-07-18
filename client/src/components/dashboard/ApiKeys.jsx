@@ -2,35 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Plus, Copy, Eye, EyeOff, Trash2, Edit, Calendar } from 'lucide-react';
 
 const ApiKeys = () => {
-  const [keys, setKeys] = useState([
-    {
-      id: 1,
-      name: 'Production',
-      key: 'ak_live_1234567890abcdef1234567890abcdef',
-      created: '2024-01-15',
-      lastUsed: '2024-01-20',
-      requests: 12847,
-      visible: false
-    },
-    {
-      id: 2,
-      name: 'Development',
-      key: 'ak_test_abcdef1234567890abcdef1234567890',
-      created: '2024-01-10',
-      lastUsed: '2024-01-19',
-      requests: 3241,
-      visible: false
-    },
-    {
-      id: 3,
-      name: 'Staging',
-      key: 'ak_test_9876543210fedcba9876543210fedcba',
-      created: '2024-01-05',
-      lastUsed: '2024-01-18',
-      requests: 856,
-      visible: false
-    }
-  ]);
+  const [keys, setKeys] = useState([]);
   const [connectionUri, setConnectionUri] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newKeyName, setNewKeyName] = useState('');
@@ -46,15 +18,34 @@ const ApiKeys = () => {
     // In a real app, you'd show a toast notification here
   };
 
-  const deleteKey = (id) => {
-    setKeys(keys.filter(key => key.id !== id));
-  };
+  const deleteKey = async (id) => {
+  try {
+    const response = await fetch(`https://backdevsai.onrender.com/api/key/delete/${id}`, {
+      method: 'DELETE',
+      credentials: 'include', // to send cookies if using auth middleware
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message || "Failed to delete key");
+      return;
+    }
+
+    // remove from state
+    setKeys(keys.filter(key => key._id !== id));
+  } catch (error) {
+    console.error("Error deleting key:", error);
+    alert("Something went wrong while deleting the key.");
+  }
+};
+
 
 const createNewKey = async () => {
   if (!newKeyName.trim() || !connectionUri.trim()) return;
 
   try {
-    const response = await fetch('http://localhost:5000/api/key/create', {
+    const response = await fetch('https://backdevsai.onrender.com/api/key/create', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -96,7 +87,7 @@ const createNewKey = async () => {
 useEffect(() => {
   const fetchKeys = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/key/getmyapis", {
+      const response = await fetch("https://backdevsai.onrender.com/api/key/getmyapis", {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -111,7 +102,8 @@ useEffect(() => {
         key: k.key,
         created: new Date(k.createdAt).toISOString().split("T")[0],
         lastUsed: 'Never', // You can update this based on actual field
-        requests: 0, // If available in schema
+        count: k.count,
+        _id: k._id,
         visible: false
       })));
     } catch (err) {
@@ -184,20 +176,14 @@ useEffect(() => {
                     Created: {key.created}
                   </div>
                   <div>
-                    Last used: {key.lastUsed}
-                  </div>
-                  <div>
-                    Requests: {key.requests.toLocaleString()}
+                    Requests: {key.count}
                   </div>
                 </div>
               </div>
               
               <div className="flex items-center space-x-2 mt-4 lg:mt-0">
-                <button className="p-2 hover:bg-[rgba(255,255,255,0.1)] rounded transition-colors">
-                  <Edit className="w-4 h-4" />
-                </button>
                 <button 
-                  onClick={() => deleteKey(key.id)}
+                  onClick={() => deleteKey(key._id)}
                   className="p-2 hover:bg-red-500/20 rounded transition-colors text-red-400"
                 >
                   <Trash2 className="w-4 h-4" />

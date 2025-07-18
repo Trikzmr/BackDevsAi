@@ -14,6 +14,7 @@ import {
   Users,
   Cpu
 } from 'lucide-react';
+import ExampleUse from "./ExampleUse"
 
 const LandingPage = () => {
   const features = [
@@ -44,7 +45,7 @@ const LandingPage = () => {
       name: "Sarah Chen",
       role: "Senior Developer",
       company: "TechFlow",
-      content: "AIBackDevs cut our backend development time by 70%. The prompt-based approach is revolutionary.",
+      content: "BackDevsAI cut our backend development time by 70%. The prompt-based approach is revolutionary.",
       avatar: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop"
     },
     {
@@ -66,7 +67,7 @@ const LandingPage = () => {
               <div className="w-8 h-8 bg-gradient-to-br from-[#3b82f6] to-[#1d4ed8] rounded-lg flex items-center justify-center">
                 <Cpu className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold">AIBackDevs</span>
+              <span className="text-xl font-bold">BackDevsAI</span>
             </Link>
             <div className="flex items-center space-x-4">
               <Link
@@ -90,14 +91,14 @@ const LandingPage = () => {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto text-center">
           <div className="relative">
-            <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-[#3b82f6]/10 rounded-full blur-3xl"></div>
-            <h1 className="text-6xl sm:text-7xl font-bold mb-6 bg-gradient-to-r from-[#e5e5e5] to-[#9ca3af] bg-clip-text text-transparent">
-              Your AI-Powered
-              <br />
-              <span className="bg-gradient-to-r from-[#3b82f6] to-[#1d4ed8] bg-clip-text text-transparent">
-                Backend Developer
-              </span>
-            </h1>
+            <div className="absolute top-10 left-1/2 transform -translate-x-1/2 w-96 h-96 bg-[#3b82f6]/10 rounded-full blur-3xl"></div>
+            <h1 className="text-6xl sm:text-7xl font-bold mt-6 mb-6 bg-gradient-to-r from-[#e5e5e5] to-[#9ca3af] bg-clip-text text-transparent">
+  Backend Dev — Reimagined<br />
+  <span className="bg-gradient-to-r from-[#3b82f6] to-[#1d4ed8] bg-clip-text text-transparent">
+    One Intent. One API. Infinite Possibilities.
+  </span>
+</h1>
+
             <p className="text-xl sm:text-2xl text-[#9ca3af] mb-12 max-w-3xl mx-auto">
               Skip boilerplate. Build faster. Use prompts to create real backend functionality.
             </p>
@@ -124,10 +125,11 @@ const LandingPage = () => {
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Everything you need to build</h2>
+         <h2 className="text-4xl font-bold mb-4">Your Entire Backend Toolkit — In One API.</h2>
             <p className="text-xl text-[#9ca3af] max-w-2xl mx-auto">
-              Powerful features designed to accelerate your backend development workflow
+              Built for devs who hate wasting time — speed, simplicity, and serious backend firepower.
             </p>
+
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
@@ -145,7 +147,7 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-
+      <ExampleUse/>
       {/* Testimonials Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
@@ -189,65 +191,7 @@ const LandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-[#1f2937] py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-[#3b82f6] to-[#1d4ed8] rounded-lg flex items-center justify-center">
-                  <Cpu className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-xl font-bold">AIBackDevs</span>
-              </div>
-              <p className="text-[#9ca3af] text-sm">
-                The future of backend development is here. Build faster with AI.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Product</h4>
-              <ul className="space-y-2 text-[#9ca3af]">
-                <li><a href="#" className="hover:text-[#3b82f6] transition-colors">Features</a></li>
-                <li><a href="#" className="hover:text-[#3b82f6] transition-colors">Pricing</a></li>
-                <li><a href="#" className="hover:text-[#3b82f6] transition-colors">API</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Resources</h4>
-              <ul className="space-y-2 text-[#9ca3af]">
-                <li>
-                  <a href="#" className="hover:text-[#3b82f6] transition-colors flex items-center">
-                    <FileText className="w-4 h-4 mr-2" />
-                    Docs
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-[#3b82f6] transition-colors flex items-center">
-                    <Github className="w-4 h-4 mr-2" />
-                    GitHub
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-[#3b82f6] transition-colors flex items-center">
-                    <Mail className="w-4 h-4 mr-2" />
-                    Contact
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Legal</h4>
-              <ul className="space-y-2 text-[#9ca3af]">
-                <li><a href="#" className="hover:text-[#3b82f6] transition-colors">Terms</a></li>
-                <li><a href="#" className="hover:text-[#3b82f6] transition-colors">Privacy</a></li>
-                <li><a href="#" className="hover:text-[#3b82f6] transition-colors">Security</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-[#1f2937] mt-8 pt-8 text-center text-[#9ca3af]">
-            <p>&copy; 2024 AIBackDevs. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      
     </div>
   );
 };
