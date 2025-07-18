@@ -20,9 +20,9 @@ const authenticate = async (req, res, next) => {
         if (!user) {
             return res.status(401).json({ message: "Unauthorized" });
         }
-        const {Username,Email} = user;
-        req.username = Username;
-        console.log({Username,Email});
+        const {username} = user;
+        req.username = username;
+        console.log({username});
         next();
     } catch (error) {
         console.error(error.message);
