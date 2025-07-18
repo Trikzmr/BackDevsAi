@@ -1,21 +1,33 @@
-// middleware/authMiddleware.js
-const jwt = require("jsonwebtoken");
-const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
+// Purpose: Middleware for authenticating user
+const jwt = require('jsonwebtoken'); 
+const User = require('../models/User');
+const cookieParser = require("cookie-parser"); 
+require('dotenv').config();
+const express = require('express');
+const router = express.Router();
 
-const authMiddleware = (req, res, next) => {
-  const token = req.cookies.token || req.header("Authorization")?.replace("Bearer ", "");
+const authenticate = async (req, res, next) => {
+    
+    try {
+        const token = req.cookies.token;
+        if (!token) {
+            console.log("Authentication middleware called");
+            return res.status(401).json({ message: "Unauthorized 1" });
+        }
+        
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findById(decoded.id);
+        if (!user) {
+            return res.status(401).json({ message: "Unauthorized" });
+        }
+        const {Username,Email} = user;
+        req.username = Username;
+        console.log({Username,Email});
+        next();
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Server error");
+    }
+}
 
-  if (!token) {
-    return res.status(401).json({ error: "Unauthorized: No token provided" });
-  }
-
-  try {
-    const decoded = jwt.verify(token, SECRET_KEY);
-    req.username = decoded.username; // Attach username
-    next();
-  } catch (error) {
-    return res.status(401).json({ error: "Unauthorized: Invalid token" });
-  }
-};
-
-module.exports = authMiddleware;
+exports = module.exports = authenticate;
