@@ -7,7 +7,7 @@ const express = require('express');
 const router = express.Router();
 
 const authenticate = async (req, res, next) => {
-    
+    console.log("hit middleware")
     try {
         const token = req.cookies.token;
         if (!token) {
