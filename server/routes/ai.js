@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const cors = require("cors");
 const ApiKey = require("../models/Key");
 
-router.post("/v1", async (req, res) => {
+router.post("/v1", cors({ origin: '*' }), async (req, res) => {
   const { instructions, key, collectionName, data, oldData } = req.body;
   let context;
 

@@ -8,8 +8,19 @@ dotenv.config();
 connectDB();
 
 const app = express();
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://back-devs-ai.vercel.app"
+];
+
 app.use(cors({
-  origin: "http://localhost:5173", // replace with your frontend domain
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true); // Allow the request
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
