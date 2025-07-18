@@ -45,8 +45,8 @@ router.post("/login", async (req, res) => {
     // Set token as HttpOnly cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, // set to true if using HTTPS
-      sameSite: "Lax",
+      secure: true,          // ✅ Must be true because Render uses HTTPS
+      sameSite: "None",      // ✅ Required for cross-origin requests
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
